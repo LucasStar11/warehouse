@@ -7,12 +7,14 @@ import com.example.warehouse.db.ProductModel;
 import com.example.warehouse.db.ProductModelRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductModelService {
@@ -29,6 +31,7 @@ public class ProductModelService {
         addProduct(new AddProductDTO("Яблоко",3));
         sellProduct(new SellProductDTO("Яблоко",1));
         transactionService.logAllTransactions();
+        countAllPrices();
     }
 
     @Transactional
@@ -81,6 +84,10 @@ public class ProductModelService {
                 );
         product.setDiscount(dto.getDiscount());
         productRepository.save(product);
+    }
+
+    public void countAllPrices() {
+        log.info(String.valueOf(productRepository.countAll()));
     }
 
 
