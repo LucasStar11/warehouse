@@ -17,19 +17,9 @@ public class TransactionService {
     private final TransactionModelRepository transactionRepository;
 
     @Transactional
-    public void crateAddTransaction(ProductModel productModel, Integer quantity, Double price) {
+    public void crateTransaction(ProductModel productModel,TransactionType type, Integer quantity, Double price) {
         TransactionModel transaction = new TransactionModel();
-        transaction.setType(TransactionType.ADD);
-        transaction.setQuantity(quantity);
-        transaction.setUnitPrice(price);
-        transaction.setTotalAmount(quantity * price);
-        transaction.setProduct(productModel);
-        transactionRepository.save(transaction);
-    }
-
-    public void createSellTransaction(ProductModel productModel, Integer quantity, Double price) {
-        TransactionModel transaction = new TransactionModel();
-        transaction.setType(TransactionType.SELL);
+        transaction.setType(type);
         transaction.setQuantity(quantity);
         transaction.setUnitPrice(price);
         transaction.setTotalAmount(quantity * price);

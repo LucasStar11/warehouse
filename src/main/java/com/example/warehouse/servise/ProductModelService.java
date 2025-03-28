@@ -5,6 +5,7 @@ import com.example.warehouse.DTOs.DiscountDTO;
 import com.example.warehouse.DTOs.SellProductDTO;
 import com.example.warehouse.db.ProductModel;
 import com.example.warehouse.db.ProductModelRepository;
+import com.example.warehouse.enums.TransactionType;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,8 +48,9 @@ public class ProductModelService {
         else
             product.setQuantity(product.getQuantity() + dto.getQuantity());
 
-        transactionService.crateAddTransaction(
+        transactionService.crateTransaction(
                 productRepository.save(product),
+                TransactionType.ADD,
                 dto.getQuantity(),
                 product.getPrice() * (100 - product.getDiscount()) / 100
         );
@@ -67,8 +69,9 @@ public class ProductModelService {
         else
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Quantity exceeds limit");
 
-        transactionService.createSellTransaction(
+        transactionService.crateTransaction(
                 productRepository.save(product),
+                TransactionType.SELL,
                 dto.getQuantity(),
                 product.getPrice() * (100 - product.getDiscount()) / 100
         );
